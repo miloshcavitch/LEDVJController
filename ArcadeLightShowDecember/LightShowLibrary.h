@@ -2,8 +2,6 @@
 
 class LightShowController
 {
-private:
-  colorWheel* CWO;
 
 public:
   int ColorWheel[765][3];
@@ -16,9 +14,6 @@ public:
 
   //set whether events happen on quarter notes, 1/16th etc.
   void setfractionTime(int knobInfo);
-  //points to colorWheel object to
-  void connectColorWheel(colorWheel* CWObject);
-  void connectColorPulse(colorPulse* CPObject);
 };
 
 class colorWheel
@@ -26,6 +21,8 @@ class colorWheel
 private:
   bool justFlipped;
   bool active;
+  LightShowController* eLeSCee;
 public:
-
+  void wheelStep(unsigned long elTime, int* r, int* g, int* b);
+  void connectController(LightShowController* LSC);
 }

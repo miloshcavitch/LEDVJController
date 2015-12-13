@@ -34,7 +34,7 @@ LightShowController::LightShowController(int serialInfo, int knobInfo){
     bSet += bD;
   }
   //below variables are temporary until i figure out how to work with ableton
-  
+
   updateBPM(serialInfo);
   setFractionTime(knobInfo);
 }

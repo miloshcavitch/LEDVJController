@@ -30,10 +30,12 @@ int colorPalette[BUTTONCOUNT][3] = {
   {0, 180, 70},//turqoise
   {0, 90, 140}//turqoise
 };
+
 const int kRed = 2;
 const int kGreen = 3;
 const int kBlue = 4;
 const int kStrobe = 5;
+
 int red, green, blue;
 
 Bounce directionDebouncer[4];
@@ -41,7 +43,11 @@ Bounce buttonDebouncer[8];
 
 void setup(){
   Serial.begin(115200);
-  pinMode(
+  pinMode(kRed, OUTPUT);
+  pinMode(kGreen, OUTPUT);
+  pinMode(kBlue, OUTPUT);
+  pinMode(kStrobe, OUTPUT);
+  
   for(int i = 0; i <btnCount; i++){
     pinMode(buttonPins[i], INPUT);
     digitalWrite(buttonPins[i], HIGH);
@@ -72,11 +78,5 @@ void loop(){
   for (int i = 0; i < btnCount; i++){
     buttonDebouncer[i].update();
     bState[i] = buttonDebouncer[i].read();
-  }
-  for (int j = 0; j < BUTTONCOUNT; j++){
-    if (bState[j] == LOW){
-      unsigned long testtime = micros();
-    }
-    
   }
 }
