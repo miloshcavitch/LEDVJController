@@ -19,7 +19,7 @@ bool LFOMode;
 unsigned long mictime = 0;
 unsigned long lastMicEvent = 0;
 unsigned long loopTime = 0;
-
+int i = 0;
 int colorPalette[BUTTONCOUNT][3] = {
   {255, 0, 0},//red
   {125, 0, 120},//purple
@@ -36,6 +36,9 @@ const int kGreen = 3;
 const int kBlue = 4;
 const int kStrobe = 5;
 
+LightShowController lsc;
+colorWheel rightMode;
+  
 int red, green, blue;
 
 Bounce directionDebouncer[4];
@@ -60,6 +63,7 @@ void setup(){
     directionDebouncer[i].attach(DIRECTION[i]);
     directionDebouncer[i].interval(5);
   }
+  rightMode.test(lsc);
 }
 void loop(){
   mictime = micros();
@@ -79,4 +83,18 @@ void loop(){
     buttonDebouncer[i].update();
     bState[i] = buttonDebouncer[i].read();
   }
+  rightMode.standardMarch(red, green, blue, i, lsc);
+  analogWrite(kRed, 255 - red);
+  analogWrite(kGreen, 255 -green);
+  analogWrite(kBlue, 255 - blue);
+  delay(2);
+  /*Serial.println(red);
+  Serial.print(" ");
+  
+  Serial.print(green);
+  Serial.print(" ");
+  
+  Serial.print(blue);
+  Serial.print(" ");
+*/
 }

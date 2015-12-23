@@ -2,9 +2,9 @@
 
 class LightShowController
 {
-
 public:
   int ColorWheel[765][3];
+  LightShowController();
   int Tempo;
   unsigned long TempoinMicros;
   float fractionTime;
@@ -21,8 +21,9 @@ class colorWheel
 private:
   bool justFlipped;
   bool active;
-  LightShowController* eLeSCee;
 public:
   void wheelStep(unsigned long elTime, int* r, int* g, int* b);
   void connectController(LightShowController* LSC);
-}
+  void standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls);
+  void test(LightShowController &ls);
+};

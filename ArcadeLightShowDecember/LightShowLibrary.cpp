@@ -1,40 +1,58 @@
 #include "Arduino.h"
 #include "LightShowLibrary.h"
 
-LightShowController::LightShowController(int serialInfo, int knobInfo){
-  int rSet = 255;
-  int grSet = 0;
-  int bSet = 0;
-  int rD = -1;
-  int grD = 1;
-  int bD = 0;
+LightShowController::LightShowController(){
   //set array of color spectrum going from red to green to blue to red again, in 8 bit RGB values.
-  for (int i = 0; i < 765; i++)
+    int rSet = 255;
+    int gSet = 0;
+    int bSet = 0;
+    
+  for (int i = 0; i < 255; i++)
   {
     ColorWheel[i][0] = rSet;
-    ColorWheel[i][1] = grSet;
+    ColorWheel[i][1] = gSet;
     ColorWheel[i][2] = bSet;
-    if (rSet >= 255){
-      rD = -1;
-      grD = 1;
-      bD = 0;
-    }
-    if (grSet >= 255){
-      rD = 0;
-      grD = -1;
-      bD = 0;
-    }
-    if (bSet >= 255){
-      rD = 1;
-      grD = 0;
-      bD = -1;
-    }
-    rSet += rD;
-    grSet += grD;
-    bSet += bD;
+    rSet--;
+    gSet++;
+  }
+  for (int i = 255; i < 510; i++)
+  {
+    ColorWheel[i][0] = rSet;
+    ColorWheel[i][1] = gSet;
+    ColorWheel[i][2] = bSet;
+    gSet--;
+    bSet++;
+  }
+  for (int i = 510; i < 765; i++)
+  {
+    ColorWheel[i][0] = rSet;
+    ColorWheel[i][1] = gSet;
+    ColorWheel[i][2] = bSet;
+    rSet++;
+    bSet--;
   }
   //below variables are temporary until i figure out how to work with ableton
-
-  updateBPM(serialInfo);
-  setFractionTime(knobInfo);
 }
+
+
+void colorWheel::standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls){
+  i++;
+  r = ls.ColorWheel[i][0];
+  g = ls.ColorWheel[i][1];
+  b = ls.ColorWheel[i][2];
+  if(i >= 765){
+    i = 0;
+  }
+}
+
+void colorWheel::test(LightShowController &ls){
+  for (int j = 0; j < 765; j++){
+    Serial.println("red ");
+    Serial.print(ls.ColorWheel[j][0]);
+    Serial.print("green ");
+    Serial.print(ls.ColorWheel[j][1]);
+    Serial.print("blue ");
+    Serial.print(ls.ColorWheel[j][2]);
+  }
+}
+
