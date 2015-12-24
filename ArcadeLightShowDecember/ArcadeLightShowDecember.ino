@@ -16,6 +16,10 @@ int prvBState[8];
 bool leftrightMode;
 bool strobeMode;
 bool LFOMode;
+bool strobe;
+unsigned long strobetime = 50000;
+unsigned long lastStrobeEvent;
+
 
 unsigned long mictime = 0;
 unsigned long lastMicEvent = 0;
@@ -48,6 +52,8 @@ LightShowController lsc;
 colorWheel rightMode;
   
 int red, green, blue;
+
+
 
 Bounce directionDebouncer[4];
 Bounce buttonDebouncer[8];
@@ -108,9 +114,20 @@ void loop(){
   rightMode.standardMarch(red, green, blue, i, lsc, colorOffset);
   lastMicEvent = mictime;
   }
-  analogWrite(kRed, 255 - red);
-  analogWrite(kGreen, 255 -green);
-  analogWrite(kBlue, 255 - blue);
+  if (mictime >= (lastStrobeEvent + strobetime)){
+    strobe = !strobe;
+    lastStrobeEvent = mictime;
+  }
+
+  if (strobe){
+    analogWrite(kRed, 255);
+    analogWrite(kGreen, 255);
+    analogWrite(kBlue, 255);    
+  }else{
+    analogWrite(kRed, 255 - red);
+    analogWrite(kGreen, 255 -green);
+    analogWrite(kBlue, 255 - blue);
+  }
   /*Serial.println(red);
   Serial.print(" ");
   
