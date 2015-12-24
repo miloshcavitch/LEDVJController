@@ -20,10 +20,9 @@ class colorWheel
 {
 private:
   bool justFlipped;
-  bool active;
 public:
   void wheelStep(unsigned long elTime, int* r, int* g, int* b);
   void connectController(LightShowController* LSC);
-  void standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls);
+  void standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls, int offset);
   void test(LightShowController &ls);
 };

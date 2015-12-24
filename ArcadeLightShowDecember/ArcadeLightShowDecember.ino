@@ -1,5 +1,6 @@
 #include <Bounce2.h>
 #include "LightShowLibrary.h"
+#include <stdio.h>
 #define DIRCOUNT 4
 #define BUTTONCOUNT 8
 
@@ -19,7 +20,9 @@ bool LFOMode;
 unsigned long mictime = 0;
 unsigned long lastMicEvent = 0;
 unsigned long loopTime = 0;
+unsigned long intervalTime = 5000;
 int i = 0;
+
 int colorPalette[BUTTONCOUNT][3] = {
   {255, 0, 0},//red
   {125, 0, 120},//purple
@@ -29,6 +32,11 @@ int colorPalette[BUTTONCOUNT][3] = {
   {0, 225, 0},//green
   {0, 180, 70},//turqoise
   {0, 90, 140}//turqoise
+};
+int colorOffset = 0;
+
+int bOVal[8] = {
+  95, 191, 286, 382, 477, 573, 669, 0
 };
 
 const int kRed = 2;
@@ -43,6 +51,16 @@ int red, green, blue;
 
 Bounce directionDebouncer[4];
 Bounce buttonDebouncer[8];
+
+int sum_array(int a[], int num_elements)
+{
+   int i, sum=0;
+   for (i=0; i<num_elements; i++)
+   {
+   sum = sum + a[i];
+   }
+   return(sum);
+}
 
 void setup(){
   Serial.begin(115200);
@@ -82,12 +100,17 @@ void loop(){
   for (int i = 0; i < btnCount; i++){
     buttonDebouncer[i].update();
     bState[i] = buttonDebouncer[i].read();
+    if (bState[i] == LOW){//inverse logic
+      colorOffset = bOVal[i];
+    }
   }
-  rightMode.standardMarch(red, green, blue, i, lsc);
+  if(mictime >= (lastMicEvent + intervalTime)){
+  rightMode.standardMarch(red, green, blue, i, lsc, colorOffset);
+  lastMicEvent = mictime;
+  }
   analogWrite(kRed, 255 - red);
   analogWrite(kGreen, 255 -green);
   analogWrite(kBlue, 255 - blue);
-  delay(2);
   /*Serial.println(red);
   Serial.print(" ");
   

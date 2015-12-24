@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include "LightShowLibrary.h"
-
+#include <math.h>
 LightShowController::LightShowController(){
   //set array of color spectrum going from red to green to blue to red again, in 8 bit RGB values.
     int rSet = 255;
@@ -35,11 +35,15 @@ LightShowController::LightShowController(){
 }
 
 
-void colorWheel::standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls){
+void colorWheel::standardMarch(int &r, int &g, int &b, int &i, LightShowController &ls, int offset){
   i++;
-  r = ls.ColorWheel[i][0];
-  g = ls.ColorWheel[i][1];
-  b = ls.ColorWheel[i][2];
+  int j = i + offset;
+  if (j > 765){
+    j = j - 765;
+  }
+  r = ls.ColorWheel[j][0];
+  g = ls.ColorWheel[j][1];
+  b = ls.ColorWheel[j][2];
   if(i >= 765){
     i = 0;
   }
